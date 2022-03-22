@@ -4,8 +4,7 @@
       fxLayout="row inline"
       fxLayoutAlign="start center"
       fxLayoutGap="5px"
-      [matTooltip]="tooltip ?? columnOption.label ?? ''"
-      [matTooltipShowDelay]="1000"
+      [attr.aria-label]="tooltip ?? columnOption.label ?? ''"
     >
       any value
     </span>

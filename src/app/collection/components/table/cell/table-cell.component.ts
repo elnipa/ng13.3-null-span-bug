@@ -17,7 +17,6 @@ interface Color {}
 @Component({
   selector: 'eta-table-cell',
   templateUrl: './table-cell.component.html',
-  styleUrls: ['./table-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableCellComponent<

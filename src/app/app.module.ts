@@ -1,13 +1,13 @@
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ProblemModule } from './collection/problem.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, MatTooltipModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, ProblemModule],
   providers: [],
   bootstrap: [AppComponent],
 })
