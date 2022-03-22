@@ -1,3 +1,14 @@
-<router-outlet></router-outlet>
-
-<!-- <eta-collection></eta-collection> -->
+<ng-container *ngIf="isTableColumnTypeSelect(column)">
+  <ng-container *ngIf="column.options?.[value] as columnOption">
+    <span
+      fxLayout="row inline"
+      fxLayoutAlign="start center"
+      fxLayoutGap="5px"
+      [matTooltip]="tooltip ?? columnOption.label ?? ''"
+      [matTooltipShowDelay]="1000"
+    >
+      any value
+    </span>
+  </ng-container>
+  <ng-template #noColumnOptionForValue>{{ value }}</ng-template>
+</ng-container>
