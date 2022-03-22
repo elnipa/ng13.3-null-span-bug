@@ -1,0 +1,104 @@
+@use '@angular/material' as mat;
+@use 'util';
+@use 'var' as var;
+
+.table-container {
+  position: relative;
+  overflow: auto;
+
+  .clickable {
+    cursor: pointer;
+  }
+
+  .mat-row:hover td,
+  .mat-row:active td {
+    @include util.auto-dark-mode() using ($background, $foreground) {
+      background-color: mat.get-color-from-palette($background, hover);
+    }
+  }
+
+  th {
+    border-bottom-width: 2px;
+  }
+
+  th,
+  td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+
+    padding: 0 5px;
+    &:first-child {
+      padding-left: 20px;
+    }
+    &:last-child {
+      padding-right: 20px;
+    }
+
+    .image {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      object-fit: cover;
+      vertical-align: middle;
+    }
+  }
+
+  .table-cell-no-floating {
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // align `actions` column to right
+  .mat-column-actions {
+    text-align: right;
+    justify-content: flex-end;
+  }
+
+  .mat-header-cell {
+    text-transform: capitalize;
+
+    &:hover,
+    &:active {
+      .group-by {
+        opacity: 1;
+      }
+    }
+  }
+
+  th .group-by {
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 2 linear;
+  }
+
+  .group-header {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .group-header-counter {
+    padding: 0px 8px;
+    min-height: 24px;
+    margin-left: 10px;
+  }
+
+  td.mat-column-expand-row {
+    padding: 0;
+    @include util.auto-dark-mode() using ($background, $foreground) {
+      border-left: 10px solid mat.get-color-from-palette($foreground, divider);
+    }
+  }
+
+  .mat-icon {
+    color: mat.get-color-from-palette(var.$theme-foreground, secondary-text);
+  }
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

@@ -1,0 +1,142 @@
+<!-- TABLE -->
+<div
+  class="table-container"
+  cdkDropList
+  [style.max-height]="
+    heightChangeable ? tableSettings.height || 'unset' : 'unset'
+  "
+>
+  <table
+    mat-table
+    matSort
+    [style.width.%]="100"
+    [style.table-layout]="tableLayout"
+  >
+    <!-- CHECKBOX COLUMN -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef style="width: 30px"></th>
+      <td mat-cell *matCellDef="let row"></td>
+    </ng-container>
+    <!-- END CHECKBOX COLUMN -->
+
+    <!-- indent column -->
+    <ng-container matColumnDef="indent-column">
+      <th mat-header-cell *matHeaderCellDef [style.width]="0"></th>
+      <td mat-cell *matCellDef="let group"></td>
+    </ng-container>
+
+    <!-- DEFINED TABLE COLUMNS -->
+    <ng-container *ngFor="let column of columns">
+      <ng-container [matColumnDef]="column.name">
+        <!-- COLUMN HEADER -->
+        <th
+          mat-header-cell
+          cdkDrag
+          cdkDragLockAxis="x"
+          cdkDragBoundary=".table-container"
+          *matHeaderCellDef="let row"
+          [style.cursor]="
+            columnsDraggable && tableSettings.attributesOrderChangeable
+              ? 'move'
+              : 'auto'
+          "
+          [style.width]="column.width"
+          [style.text-align]="
+            column.alignment === attributeAlignment.RIGHT
+              ? 'right'
+              : column.alignment === attributeAlignment.CENTER
+              ? 'center'
+              : 'left'
+          "
+        >
+          <eta-table-header
+            [column]="column"
+            [(tableSettings)]="tableSettings"
+            [customColumnHeaderDefs]="customColumnHeaderDefs"
+          >
+          </eta-table-header>
+        </th>
+        <!-- END: COLUMN HEADER -->
+
+        <!-- COLUMN CELLS -->
+        <td
+          mat-cell
+          *matCellDef="let row"
+          [style.text-align]="
+            column.alignment === attributeAlignment.RIGHT
+              ? 'right'
+              : column.alignment === attributeAlignment.CENTER
+              ? 'center'
+              : 'left'
+          "
+          [class.has-link]="!!column.routerLink"
+          [routerLink]="column.routerLink ? column.routerLink(row) : null"
+          [routerLinkActive]="column.routerLink ? 'active' : 'no-link'"
+        >
+          <eta-table-cell
+            [column]="column"
+            [row]="row"
+            [customColumnDefs]="customColumnDefs"
+          ></eta-table-cell>
+        </td>
+        <!-- END COLUMN CELLS -->
+      </ng-container>
+    </ng-container>
+
+    <!-- EXPAND COLUMN - START -->
+    <ng-container matColumnDef="expand-row">
+      <td
+        mat-cell
+        *matCellDef="let row"
+        [attr.colspan]="tableSettings.attributesToDisplay?.length"
+      >
+        <eta-table-cell
+          [column]="{ name: 'expand-row' }"
+          [row]="row"
+          [customColumnDefs]="customColumnDefs"
+        ></eta-table-cell>
+      </td>
+    </ng-container>
+    <!-- EXPAND COLUMN - END -->
+
+    <!-- ACTION COLUMN - START -->
+    <ng-container matColumnDef="actions" stickyEnd *ngIf="menuItems">
+      <th mat-header-cell *matHeaderCellDef style="width: 170px">Actions</th>
+      <td mat-cell *matCellDef="let row" style="text-align: right">
+        <eta-menu
+          *ngIf="menuItems"
+          [items]="menuItems"
+          [context]="row"
+          layoutAlign="end"
+        ></eta-menu>
+      </td>
+    </ng-container>
+    <!-- ACTION COLUMN - END -->
+
+    <!-- TABLE HEADERS -->
+    <tr
+      mat-header-row
+      *matHeaderRowDef="tableSettings.attributesToDisplay; sticky: true"
+    ></tr>
+    <!-- END: TABLE HEADERS -->
+
+    <!-- TABLE ROWS -->
+    <tr
+      mat-row
+      *matRowDef="let row; columns: tableSettings.attributesToDisplay"
+      [class.clickable]="isRowClickable(row)"
+      (click)="onRowClick(row)"
+      (contextmenu)="onContextMenu($event, row)"
+    ></tr>
+    <!-- END: TABLE ROWS -->
+
+    <!-- EXPANDED ROW -->
+    <ng-container *ngIf="expandRow">
+      <tr
+        [style.height.px]="0"
+        mat-row
+        *matRowDef="let row; columns: ['expand-row']"
+      ></tr>
+    </ng-container>
+  </table>
+</div>

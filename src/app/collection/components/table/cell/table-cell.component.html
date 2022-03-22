@@ -1,0 +1,138 @@
+<!-- insert customColumnDef if it is defined for this column -->
+<ng-container
+  *ngIf="
+    column && getCustomColumnDef(column.name) as customColumn;
+    else columnContent
+  "
+>
+  <!-- insert customColumnDef template here and inject row as context -->
+  <ng-container
+    *ngTemplateOutlet="customColumn.templateRef; context: { $implicit: row }"
+  >
+  </ng-container>
+</ng-container>
+
+<!-- else: use default column def -->
+<ng-template #columnContent>
+  <a
+    *ngIf="column && column.routerLink; else columnTemplates"
+    [routerLink]="column.routerLink(row)"
+  >
+    <ng-container *ngTemplateOutlet="columnTemplates"></ng-container>
+  </a>
+
+  <!-- COLUMN TEMPLATES -->
+  <ng-template #columnTemplates>
+    <ng-container *ngIf="column">
+      <!-- GROUP COLUMN -->
+      <ng-container *ngIf="isTableColumnTypeGroup(column)">
+        <div fxLayout="row" fxLayoutGap="2px">
+          <!-- <eta-table-cell
+            *ngFor="let groupColumn of column.attributes"
+            [column]="groupColumn"
+            [row]="row"
+            [customColumnDefs]="customColumnDefs"
+          ></eta-table-cell> -->
+        </div>
+      </ng-container>
+
+      <!-- BOOLEAN -->
+      <ng-container *ngIf="isTableColumnTypeBoolean(column)">
+        boolean
+      </ng-container>
+
+      <!-- ICON -->
+      <ng-container *ngIf="isTableColumnTypeIcon(column)"> icon </ng-container>
+
+      <!-- TAGS -->
+      <ng-container *ngIf="column.type === columnType.TAGS">
+        <!-- <eta-tags-list
+          [tags]="column.data!(row)"
+          [format]="tagFormat.SIMPLE"
+        ></eta-tags-list> -->
+      </ng-container>
+
+      <!-- SELECT -->
+      <ng-container *ngIf="isTableColumnTypeSelect(column)">
+        <ng-container *ngIf="column.options?.[value] as columnOption">
+          <span
+            fxLayout="row inline"
+            fxLayoutAlign="start center"
+            fxLayoutGap="5px"
+            [matTooltip]="tooltip ?? columnOption.label ?? ''"
+            [matTooltipShowDelay]="1000"
+          >
+            <!-- LABEL -->
+            <span *ngIf="column.showValue !== false">
+              {{ columnOption.label }}
+            </span>
+          </span>
+        </ng-container>
+        <ng-template #noColumnOptionForValue>{{ value }}</ng-template>
+      </ng-container>
+
+      <!-- IMAGE -->
+      <ng-container *ngIf="isTableColumnTypeImage(column)">
+        <ng-container
+          *ngTemplateOutlet="
+            image;
+            context: {
+              data: column.data!(row),
+              isImageFile: column.isImageFile
+            }
+          "
+        >
+        </ng-container>
+        <ng-template #image let-src="data" let-authImage="isImageFile">
+          image
+        </ng-template>
+
+        <ng-template #imagePlaceholder>
+          <mat-icon class="form-prefix">image</mat-icon>
+        </ng-template>
+      </ng-container>
+
+      <!-- COLORS COLUMN -->
+      <ng-container *ngIf="column.type === columnType.COLOR">
+        <ng-container
+          *ngTemplateOutlet="color; context: { data: column.data!(row) }"
+        >
+        </ng-container>
+        <ng-template #color let-color="data"> color </ng-template>
+      </ng-container>
+
+      <!-- DATETIME COLUMN -->
+      <ng-container *ngIf="isTableColumnTypeDatetime(column)">
+        <!-- <span
+          *ngIf="column.datetimeAgo; else absoluteDatetime"
+          matTooltip="{{ value | datetime }}"
+          [matTooltipShowDelay]="500"
+        >
+          {{ value | datetimeAgo }}
+        </span>
+        <ng-template #absoluteDatetime>{{ value | datetime }}</ng-template> -->
+      </ng-container>
+      <!-- NUMBER COLUMN -->
+      <ng-container *ngIf="column.type === columnType.NUMBER">
+        <span [matTooltip]="tooltip ?? ''" [matTooltipShowDelay]="1000">
+          {{ value | number }}
+        </span>
+      </ng-container>
+
+      <!-- DEFAULT COLUMN -->
+      <ng-container
+        *ngIf="
+          !column.type ||
+          column.type === columnType.TEXT ||
+          column.type === columnType.HEADER ||
+          column.type === columnType.SUBHEADER ||
+          column.type === columnType.DESCRIPTION
+        "
+      >
+        <span [matTooltip]="tooltip ?? ''" [matTooltipShowDelay]="1000">
+          {{ value }}
+        </span>
+      </ng-container>
+    </ng-container>
+  </ng-template>
+</ng-template>
