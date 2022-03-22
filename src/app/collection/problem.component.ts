@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'eta-table-cell',
+  selector: 'app-problem',
   templateUrl: './problem.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
