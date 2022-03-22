@@ -23,15 +23,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { TableCellComponent } from './components/table/cell/table-cell.component';
-import { TableHeaderComponent } from './components/table/header/table-header.component';
-import { TableComponent } from './components/table/table.component';
 import { EtaColumnHeaderDefDirective } from './directives/eta-column-header-def.directive';
 import { EtaTableColumnDefDirective } from './directives/eta-table-column-def.directive';
 
 @NgModule({
   declarations: [
-    TableComponent,
-    TableHeaderComponent,
     TableCellComponent,
 
     EtaColumnHeaderDefDirective,
