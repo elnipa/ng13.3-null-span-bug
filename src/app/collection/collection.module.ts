@@ -23,16 +23,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { TableCellComponent } from './components/table/cell/table-cell.component';
-import { EtaColumnHeaderDefDirective } from './directives/eta-column-header-def.directive';
-import { EtaTableColumnDefDirective } from './directives/eta-table-column-def.directive';
 
 @NgModule({
-  declarations: [
-    TableCellComponent,
-
-    EtaColumnHeaderDefDirective,
-    EtaTableColumnDefDirective,
-  ],
+  declarations: [TableCellComponent],
 
   imports: [
     CommonModule,
